@@ -1,0 +1,67 @@
+function foo({a,b,c,d,e,f,g,h}) {
+  
+}
+
+foo({
+  c: 2,
+  g: "hello", 
+  a: 10
+});
+
+- by always calling your function with an object (and structuring parameters as an obj), you can refer to parameters by name 
+
+-----
+
+Destructuring and restructuring - 
+  - Use Es6 destructing pattern to take a configuration, merge in defaults but overwrite in the correct location
+
+var defaults = {
+  color: {
+    red: '#f00',
+    blue: '#0f0',
+    green: '#00f'
+  },
+  position: {
+    x: 0,
+    y: 0,
+    z: 0
+  }
+};
+
+var config = {
+  color: {
+    blue: "#3f6"
+  }
+};
+
+{
+  // destructuring
+  let {
+    color: {
+      red = defaults.color.red,
+      blue = defaults.color.blue,
+      green = defaults.color.green
+    } = {},
+    position: {
+      x = defaults.position.x,
+      y = defaults.position.y,
+      z = defaults.position.z
+    } = {}
+  } = config;
+
+  // restructuring
+  settings = {
+    color: {red, blue, green},
+    position: {x, y, z}
+  };
+} // these are temporary variables 
+
+
+
+
+
+
+
+
+
+

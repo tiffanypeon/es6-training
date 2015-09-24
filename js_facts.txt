@@ -1,0 +1,14 @@
+Fun JS facts!
+
+To make a noop function: 
+function() {}  === Function.prototype
+
+Reasons to abandon coffeescript - 
+
+- Coffeescript is no longer something under active development (not anymore of the creator's time and attention)
+- All of the useful stuff made it into ES6
+- It's a really bad idea to try to both ES6 and coffeescript at the same time
+
+- Callbacks == Continuation <- the second half of my program is going to happen later 
+- zalgo - google it? - async code monster
+- what's a polyfill?

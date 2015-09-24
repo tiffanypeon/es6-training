@@ -1,0 +1,113 @@
+Imperative vs. Declarative: 
+  - Declarative is saying this is the what that I want (markup)
+  - Imperative is saying this is the what I want (backend source code)
+
+Destructuring is more declarative than imperative - I want to declare the outcome and allow the js engine to figure out how to handle it for me
+
+```
+  function foo() {
+    return [1,2,3];
+  }
+
+  // when you call foo you want to get them out as individual values 
+
+  var tmp = foo(),
+    a = tmp[0],
+    b = tmp[1],
+    c = tmp[2];
+
+  console.log(a, b, c); // 1 2 3 <- pulling values out of an array, or could use an object structure
+```
+
+Above is a manual form of destructuring an assignment into its constituent values
+
+ES6 adds a declarative syntax for the destructing: 
+
+```
+  function foo() {
+    return [1,2,3];
+  }
+
+  // when you call foo you want to get them out as individual values 
+
+  var [ a, b, c ] = foo(); <-- pattern I want to match. Array destructuring syntax. You can have an array-looking value on the lefthand side, rather than the righthand side. 
+
+  function bar() { 
+    return { d: 1, e:2, f: 3} <-- known as the 'object syntax'
+  }
+
+  var { 
+    d: d, 
+    e: e, 
+    f: f 
+  } = bar(); <-- Object destructuring syntax. First thing is the property to get it from, and the second is the variable name to assign it to. ie d = 1, e = 2, f = 3
+
+  If the property name and variable name can match, you can shorten it: 
+  var { 
+    "d@": d, 
+    e: e, 
+    f: f 
+  } = bar();
+ ```
+
+- If there is an extra or if one is left off, no error occurs. That's why this is called pattern matching -- does not have to be an exact match. 
+
+What if you want to collect the return values into one final variable? 
+
+```
+  function foo() {
+    return [1,2,3,4,5,6];
+  }
+
+  var [ a, b, ...c ] = foo(); // 1 2 [3,4,5,6]
+```
+
+-This doesn't work for object destructuring, only array
+
+- Can also use a value and assign it to two different values (can account for something multiple times)
+
+- Destructuring is an assignment capability, not a declaration capability 
+
+Non-declarative assignments: 
+
+```
+  var a, b, c, d, e, f, XYZ; <-- variable declaration
+
+  [a, b, ...c] = foo(); <-- not a declaration, just an assignment
+```
+
+Object destructuring pattern without declaration must be wrapper in a (), otherwise it defaults to a block: 
+({
+  "d@": d,
+  e: XYZ, 
+  f, 
+  e
+} = bar());
+})
+
+- Destructuring also supports default values
+
+```
+  [a, b= 100, ...c ] = foo(); <- if i return an array with one or less values, or if the 1 index is nil/undefined, use default value
+
+  ({
+  "d@": d,
+  e: XYZ = 50, 
+  f, 
+  e = 100
+} = bar()); <-- setting default values in object deconstruction pattern
+})
+```
+
+- Also don't need to assign things to variables, they could be properties of an object: 
+
+```
+  var obj = {};
+  [a, obj.b, ...c] = foo();
+
+  ({
+  "d@": obj.d
+  } = bar());
+```
+
+

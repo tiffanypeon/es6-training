@@ -1,0 +1,57 @@
+```
+  var o1 = {
+    a: [1,2,3],
+    b: {
+      c: 4,
+      d: 5
+    }
+  };
+
+({
+  a: [a1, a2, a3] // I am expecting at the a property location to get an array and get each index and assign to these vars
+} = o1);
+
+  console.log(a1,a2,a3) // 1 2 3
+```
+
+Default value setting: 
+```
+  var o1 = {
+    a: undefined
+  };
+
+  var {
+    a: [ a1 = 10, a2 = 20, a3 = 30] = []
+  } = o1;
+
+  console.log(a1,a2,a3); // 10 20 30
+```
+
+With objects instead of arrays:
+```
+  var o1 = {
+    a: [],
+    b: {
+      b1: 4, 
+      b2: 5, 
+      b3: 6
+    }
+  }
+
+  var {
+    a: [ a1 = 10, a2 = 20, a3 = 30] = [],
+    b: { b1: x, b2: y, b3: z }
+  } = o1;
+```
+
+- can do function calls in value locations w/in square brackets
+
+```
+  var {
+    a: [ a1 = 10, a2 = 20, a3 = 30] = [],
+    b: { b1: x, b2: y, [foo();]: z }
+  } = o1;
+```
+
+
+

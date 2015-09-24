@@ -1,0 +1,38 @@
+... Operator (Spread or Rest Operator)
+
+``` 
+  function foo(x,y) {
+    var z = Array.prototype.slice.call(arguements, 2);
+    console.log(x,y,z);
+  }
+```
+
+foo(1,2,3,4,5) // expecting to print out array coming from z after x and y
+
+... says 'gather everything up and assign it to [variable name]'
+
+``` 
+  function foo(x,y,...z) {
+    console.log(x,y,z);
+  }
+```
+
+foo(1,2,3,4,5) // has the same outcome, but isn't ugly 
+
+```
+  var arr = [1,2,3,4,5];
+  //old school way
+  foo.apply(null,arr); // 1,2, [3, 4, 5]
+  //new way 
+  foo(...arr); // 1,2, [3, 4, 5]
+```
+- In a value position, the ... spreads out the value for usage 
+- Spread out in place within an array, rather than using concat
+
+- This operator can be used on values that have iterators (Array, String, etc)
+
+```
+  fuction foo(...args) {
+
+  }
+```

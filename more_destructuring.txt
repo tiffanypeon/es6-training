@@ -1,0 +1,24 @@
+Other destructuring info: 
+
+- All of this applies to function parameters
+
+```
+  function foo({
+    a: [
+      { color: red = "asd" } = {}
+    ]
+  }) {
+    console.log(red, blue, green)
+  }
+
+  foo({
+    a: [
+      { color: "red"},
+      { color: "green"},
+      { color: "blue"}
+    ]
+  })
+```
+
+- This works because parameters are an assignment location
+

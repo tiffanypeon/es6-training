@@ -1,0 +1,75 @@
+```
+  function foo(x,y) {
+    x = x || 10; <-- old idiom for setting default val
+    y = y || 42; 
+
+    console.log(x,y)
+  }
+
+  foo();  // 10 42
+  foo(8); //  8 42
+  foo(0); // expect 0 42, but get 10 42 because 0 evals to falsy 
+
+```
+
+- If we want to account for ability to pass in zero
+
+```
+  function foo(x,y) {
+    x = x !== undefined ? x : 10; <-- undefined is literally the only value (eg. empty string, null)
+    // OR
+    x = arguments.length == 0 ? x : 10; <-- would only work in case of one arg. 
+  }
+```
+
+New idiom is to declare defaults in arguments list
+
+```
+  function bar() {
+    console.log("bar!"); <- see how many times function is called
+    return 10;
+  }
+
+  function foo(x=bar(),y=42) {
+    console.log(x,y);
+  }
+```
+
+- bar won't get called w/in foo unless there is no value passed in for x
+
+Temporal Dead Zone w/ default params
+- When you use default values, params list is its own scope
+```
+  var x = 10;
+
+  function foo(x = x, y = 42) { <-- can't use x because x hasn't been initialized yet 
+    console.log(x,y);
+  }
+```
+But, this works 
+
+```
+  var Z = 10;
+
+  function foo(x = Z, y = x) { 
+    console.log(x,y);
+  }
+```
+
+Do default params work with rest operator? 
+
+```
+  function foo(x = 10, y, ...z) {
+    console.log(x, y, z);
+  }
+
+  foo(undefined, 2, 3, 4); // 10, 2, 3, 4
+  foo(); // 10 undefined []
+```
+
+- BUT you can't set a default value for a rest parameter
+
+
+
+
+

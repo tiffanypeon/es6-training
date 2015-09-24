@@ -1,0 +1,187 @@
+reference: https://github.com/getify/You-Dont-Know-JS/blob/master/es6%20&%20beyond/ch2.md
+transpiler: Bable.io <-- insert into build process
+
+Why is block scoping important? 
+- Functions are single unit of scope 
+- We can use a function to create some scope within a larger context 
+- JS treats functions as first class citizens (functions are values)
+
+- IFFE pattern (immediately invoked function expression, by defining function within parens)
+
+```
+  (function(){
+    var x = 2;
+    console.log(x);
+  })();
+```
+
+- How do we do this in a lighter way? 
+- Other languagers (c++, Java can put this in curly brace pair)
+
+```
+  {
+    var x = 2;
+    console.log(x);
+  }
+```
+
+- Difference from JS is that the var included in this scope bleeds out into the enclosing scope 
+
+- ES6 gives us the 'let' keyword, which allows us to attach scope to curly brace pair, rather than enclosing scope 
+
+```
+  var x = 10; 
+
+  {
+    let x = x;
+    console.log(x); // 10
+  }
+```
+
+'TDZ' - Temporal Dead Zone / Reference Error - var declarations are 'hoisted' to entire scope, let declarations do not hoist to the top of their {} scope. TDZ specifically designed to keep you from using this weird hoisting. "I see an X inside this block but it hasn't yet been initialized." 
+'TDZ' - Temporal Dead Zone - I am using a variable too early. 
+
+Parameters inside function declarations are also in block scope and also are capable of causing TDZ errors. 
+
+What are some cases where block scoping makes sense? 
+- Fuction that subtracts x from y. Want to make sure that Y is always larger than X. 
+
+```
+  function sub(x, y) {
+    var tmp; <-- stylistically, we could init tmp here to communicate that it's available for use within the entire function. 
+
+    if (x > y) {
+      var tmp = x; <-- this suggests that the intent is for the tmp variable to exist/be used only within if block
+      x = y;
+      y = tmp;
+    }
+
+    return y - x;
+}
+```
+
+- Block scope is useful for communication - clearly preferred style and use of code. 
+
+```
+  function sub(x, y) {
+    
+    if (x > y) {
+      let tmp = x; <-- attaches the tmp variable to the if block. used outside the block will throw a ReferenceError
+      x = y;
+      y = tmp;
+    }
+
+    return y - x;
+}
+```
+
+Loops 
+
+```
+  function foo(){
+    var i; <<- This says i is always available within the function 
+
+    for  (var i=0; i<5; i++) { <-- more standard, declare i in for loop definition
+      console.log(i);
+    }
+  }
+```
+ 
+But if we want to protect the code, a let can be used to enforce that 
+```
+  function foo(){
+
+    for  (let i=0; i<5; i++) { <-- now i cannot be called outside of this block w/o throwing a ReferenceError
+      console.log(i);
+    }
+  }
+```
+
+```
+  function foo(){
+
+    for (var i=0; i<=5; i++) {
+      setTimeout(function(){
+        console.log("i:",i);
+      },i*1000);    
+    })
+    }
+  }
+```
+
+- All functions closing over the same i
+- Value of i at end of loop is 6 
+
+- What if we want a new variable for each iteration? 
+
+```
+  function foo(){
+
+    for (var i=0; i<=5; i++) {
+      let j = i;
+      setTimeout(function(){
+        console.log("i:",i);
+      },i*1000);    
+    })
+    }
+  }
+```
+
+- Assigning value of i to j using a let makes a new variable each time 
+- Or you can just use let i=0, because let creates a new variation of i in each iteration
+
+```
+  function sum(x,y) { 
+
+    if (x > y) {
+      { <-- declare curly brace block to explicity create a scope, rather than hijacking existing block w/ let. Declarations should always be at the top of that block. Could put them on same line of opening block so that it's clear that's the only purpose of the block. 
+        let tmp = x;
+        x = y;
+        y = tmp;
+      }
+    }
+
+    return y - x;
+  }
+``` 
+
+The const keyword: 
+- Saying that the x binding is constant and x assignment is constant
+- Good for when you're worried someone is going to reassign your variable 
+
+```
+  function foo() { 
+    const x = [2]; <-- creates a variable that can't be reassigned (not the same as CONSTANT)
+    ...(later on in code)...
+    x = 3; <-- get an error: can't redeclare a constant
+    x[0] = 3; <-- not an error. We aren't changing the assignment of x. Changing the contents of the value. What's constant is that you can't make x to point to a different array. 
+
+  }
+```
+
+- If you're concerned about the value and you want to make it an immutable value, you can do so by passing it to Object.freeze()
+
+```
+  function foo() { 
+    const x = Object.freeze([2]); <-- creates a variable that can't be reassigned (not the same as CONSTANT)
+    ...(later on in code)...
+    x[0] = 3; <-- error - can't change immutable value
+  }
+```
+
+- Const is a block scoping tool, just like let. 
+
+```
+  function foo() { 
+    {
+      let x = 2; <-- even if a function was called and x was passed in in this block, x can only be changed by lines of code within these blocks 
+      // 5 more lines of code
+    }
+  }
+```
+
+- What would putting const in place of let say? X does not change within the context of scope. 
+- In most cases, the const isn't going to buy you much. 
+
+
+
